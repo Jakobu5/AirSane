@@ -147,49 +147,16 @@ install(CODE "
     endif()
 ")
 
-elseif(CMAKE_SYSTEM_NAME STREQUAL NIXOS)
-
-set(CMAKE_INSTALL_PREFIX $ENV{out})
-#set(CMAKE_SOURCE_DIR $ENV{src})
-
-install(TARGETS ${PROJECT_NAME}
-    RUNTIME DESTINATION sbin
-)
-
-install(CODE "
-    if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/ignore.conf)
-        file(INSTALL etc/ignore.conf DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
-    endif()
-")
-install(CODE "
-    if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/options.conf)
-        file(INSTALL etc/options.conf DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
-    endif()
-")
-install(CODE "
-    if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/Gnome-scanner.png)
-        file(INSTALL etc/Gnome-scanner.png DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
-    endif()
-")
-
-install(FILES systemd/airsaned.service
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/system
-)
-install(FILES systemd/airsaned.default
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/default
-    RENAME airsane
-)
-
 else()
 
 install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION bin
 )
 install(FILES systemd/airsaned.service
-    DESTINATION /lib/systemd/system
+    DESTINATION ${CMAKE_SOURCE_DIR}/lib/systemd/system
 )
 install(FILES systemd/airsaned.default
-    DESTINATION /etc/default
+    DESTINATION ${CMAKE_SOURCE_DIR}/etc/default
     RENAME airsane
 )
 
