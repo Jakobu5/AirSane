@@ -147,6 +147,36 @@ install(CODE "
     endif()
 ")
 
+elseif(CMAKE_SYSTEM_NAME STREQUAL NIXOS)
+
+set(CMAKE_INSTALL_PREFIX $ENV{out})
+set(CMAKE_SOURCE_PREFIX $ENV{src})
+
+install(TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION sbin
+)
+
+install(CODE "
+    if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/ignore.conf)
+        file(INSTALL ${CMAKE_SOURCE_DIR}/etc/ignore.conf DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
+    endif()
+")
+install(CODE "
+    if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/options.conf)
+        file(INSTALL ${CMAKE_SOURCE_DIR}/etc/options.conf DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
+    endif()
+")
+install(CODE "
+    if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/Gnome-scanner.png)
+        file(INSTALL ${CMAKE_SOURCE_DIR}/etc/Gnome-scanner.png DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
+    endif()
+")
+install(CODE "
+    if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/rc.d/airsaned)
+        file(INSTALL ${CMAKE_SOURCE_DIR}/freebsd/airsaned DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/rc.d)
+    endif()
+")
+
 else()
 
 install(TARGETS ${PROJECT_NAME}
