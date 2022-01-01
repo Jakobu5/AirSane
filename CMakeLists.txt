@@ -153,25 +153,25 @@ install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION bin
 )
 install(FILES systemd/airsaned.service
-    DESTINATION ${CMAKE_SOURCE_DIR}/lib/systemd/system
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/system
 )
 install(FILES systemd/airsaned.default
-    DESTINATION ${CMAKE_SOURCE_DIR}/etc/default
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/default
     RENAME airsane
 )
 
 install(CODE "
-    if(NOT EXISTS /etc/airsane/ignore.conf)
+    if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/ignore.conf)
         file(INSTALL ${CMAKE_SOURCE_DIR}/etc/ignore.conf DESTINATION /etc/airsane)
     endif()
 ")
 install(CODE "
-    if(NOT EXISTS /etc/airsane/options.conf)
+    if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/options.conf)
         file(INSTALL ${CMAKE_SOURCE_DIR}/etc/options.conf DESTINATION /etc/airsane)
     endif()
 ")
 install(CODE "
-    if(NOT EXISTS /etc/airsane/Gnome-scanner.png)
+    if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/Gnome-scanner.png)
         file(INSTALL ${CMAKE_SOURCE_DIR}/etc/Gnome-scanner.png DESTINATION /etc/airsane)
     endif()
 ")
