@@ -150,7 +150,7 @@ install(CODE "
 elseif(CMAKE_SYSTEM_NAME STREQUAL NIXOS)
 
 set(CMAKE_INSTALL_PREFIX $ENV{out})
-set(CMAKE_SOURCE_PREFIX $ENV{src})
+#set(CMAKE_SOURCE_DIR $ENV{src})
 
 install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION sbin
@@ -158,24 +158,27 @@ install(TARGETS ${PROJECT_NAME}
 
 install(CODE "
     if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/ignore.conf)
-        file(INSTALL ${CMAKE_SOURCE_DIR}/etc/ignore.conf DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
+        file(INSTALL etc/ignore.conf DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
     endif()
 ")
 install(CODE "
     if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/options.conf)
-        file(INSTALL ${CMAKE_SOURCE_DIR}/etc/options.conf DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
+        file(INSTALL etc/options.conf DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
     endif()
 ")
 install(CODE "
     if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/airsane/Gnome-scanner.png)
-        file(INSTALL ${CMAKE_SOURCE_DIR}/etc/Gnome-scanner.png DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
+        file(INSTALL etc/Gnome-scanner.png DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/airsane)
     endif()
 ")
-install(CODE "
-    if(NOT EXISTS ${CMAKE_INSTALL_PREFIX}/etc/rc.d/airsaned)
-        file(INSTALL ${CMAKE_SOURCE_DIR}/freebsd/airsaned DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/rc.d)
-    endif()
-")
+
+install(FILES systemd/airsaned.service
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/system
+)
+install(FILES systemd/airsaned.default
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/etc/default
+    RENAME airsane
+)
 
 else()
 
